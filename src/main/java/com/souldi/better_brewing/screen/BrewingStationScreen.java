@@ -20,41 +20,47 @@ public class BrewingStationScreen extends HandledScreen<BrewingStationScreenHand
     @Override
     protected void init() {
         super.init();
-        // Центрируем GUI точно как у верстака
+        // Center the GUI
         this.x = (this.width - this.backgroundWidth) / 2;
         this.y = (this.height - this.backgroundHeight) / 2;
+        this.titleX = (this.backgroundWidth - this.textRenderer.getWidth(this.title)) / 2;
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        // Рендерим фон
+        // Render background first
         this.renderBackground(context);
         
-        // Рендерим стандартный HandledScreen (слоты, предметы, курсор) СНАЧАЛА
+        // Render the standard HandledScreen (slots, items, cursor)
         super.render(context, mouseX, mouseY, delta);
         
-        // Рендерим наш кастомный фон поверх, но только в верхней части
-        int guiX = (this.width - 256) / 2;
-        int guiY = (this.height - 256) / 2;
-        // Рендерим только верхнюю часть фона, чтобы не перекрывать слоты
-        context.drawTexture(BACKGROUND_TEXTURE, guiX, guiY, 0, 0, 256, 128, 256, 256);
+        // Render brewing progress if available
+        if (handler.isLit()) {
+            int progress = handler.getBrewProgress();
+            // Draw flame progress indicator (you can customize this)
+            int flameX = this.x + 18;
+            int flameY = this.y + 37;
+            context.drawTexture(BACKGROUND_TEXTURE, flameX, flameY, 176, 0, 14, 14 - progress);
+        }
         
-        // Рендерим тултипы поверх всего
+        // Render tooltips on top of everything
         this.drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-        // Рендерим стандартный фон верстака для слотов
+        // Render brewing stand GUI background
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
-        context.drawTexture(new Identifier("textures/gui/container/crafting_table.png"), i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
+        context.drawTexture(new Identifier("textures/gui/container/brewing_stand.png"), i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
     }
 
     @Override
     protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
-        // НЕ рендерим стандартные заголовки
-        // Этот метод оставляем пустым, чтобы не рисовались стандартные тексты
+        // Draw the title
+        context.drawText(this.textRenderer, this.title, this.titleX, this.titleY, 4210752, false);
+        // Draw player inventory title
+        context.drawText(this.textRenderer, this.playerInventoryTitle, this.playerInventoryTitleX, this.playerInventoryTitleY, 4210752, false);
     }
 
     @Override

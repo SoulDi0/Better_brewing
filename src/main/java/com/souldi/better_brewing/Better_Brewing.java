@@ -1,6 +1,7 @@
 package com.souldi.better_brewing;
 
 import com.souldi.better_brewing.block.ModBlocks;
+import com.souldi.better_brewing.block.entity.ModBlockEntities;
 import com.souldi.better_brewing.item.ModItems;
 import com.souldi.better_brewing.item.ModItemGroups;
 import com.souldi.better_brewing.screen.ScreenHandlers;
@@ -25,6 +26,7 @@ public class Better_Brewing implements ModInitializer {
 
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
+		ModBlockEntities.registerBlockEntities();
 		ModItemGroups.registerItemGroups();
 		ScreenHandlers.registerScreenHandlers();
 

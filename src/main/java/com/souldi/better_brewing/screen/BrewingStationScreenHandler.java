@@ -35,45 +35,65 @@ public class BrewingStationScreenHandler extends ScreenHandler {
         inventory.onOpen(playerInventory.player);
         this.addProperties(propertyDelegate);
 
-        // Add brewing station inventory slots
-        // Input ingredients (top row)
-        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.INPUT_SLOT_1, 79, 17));
-        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.INPUT_SLOT_2, 102, 17));
-        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.INPUT_SLOT_3, 125, 17));
+        // ========== EASY POSITIONING SYSTEM ==========
+        // ADJUST THESE VALUES TO MOVE ALL SLOTS:
+        int BREWING_SLOTS_X_OFFSET = 40;  // Move brewing slots left/right
+        int BREWING_SLOTS_Y_OFFSET = 40;  // Move brewing slots up/down
+        
+        int PLAYER_INVENTORY_X_OFFSET = 48; // Move player inventory left/right
+        int PLAYER_INVENTORY_Y_OFFSET = 129; // Move player inventory up/down
+        // =============================================
+        
+        // Add brewing station inventory slots - all positions relative to offsets
+        // Single ingredient slot (top center)
+        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.INPUT_SLOT_1, 
+            BREWING_SLOTS_X_OFFSET + 39, BREWING_SLOTS_Y_OFFSET + 17));
         
         // Fuel slot (left side)
-        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.FUEL_SLOT, 17, 17));
+        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.FUEL_SLOT, 
+            BREWING_SLOTS_X_OFFSET - 23, BREWING_SLOTS_Y_OFFSET + 17));
         
-        // Bottle slots (middle row)
-        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.BOTTLE_SLOT_1, 79, 53));
-        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.BOTTLE_SLOT_2, 102, 53));
-        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.BOTTLE_SLOT_3, 125, 53));
+        // Three bottle slots (middle row) - standard brewing stand layout
+        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.BOTTLE_SLOT_1, 
+            BREWING_SLOTS_X_OFFSET + 16, BREWING_SLOTS_Y_OFFSET + 47));
+        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.BOTTLE_SLOT_2, 
+            BREWING_SLOTS_X_OFFSET + 39, BREWING_SLOTS_Y_OFFSET + 53));
+        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.BOTTLE_SLOT_3, 
+            BREWING_SLOTS_X_OFFSET + 62, BREWING_SLOTS_Y_OFFSET + 47));
         
-        // Output slots (bottom)
-        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.OUTPUT_SLOT_1, 79, 76) {
+        // Output slots (bottom row) - matching bottle positions
+        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.OUTPUT_SLOT_1, 
+            BREWING_SLOTS_X_OFFSET + 16, BREWING_SLOTS_Y_OFFSET + 71) {
             @Override
             public boolean canInsert(ItemStack stack) {
                 return false; // Output only
             }
         });
-        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.OUTPUT_SLOT_2, 102, 76) {
+        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.OUTPUT_SLOT_2, 
+            BREWING_SLOTS_X_OFFSET + 62, BREWING_SLOTS_Y_OFFSET + 71) {
             @Override
             public boolean canInsert(ItemStack stack) {
                 return false; // Output only
             }
         });
+        
+        // Unused slots (hidden/disabled)
+        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.INPUT_SLOT_2, -1000, -1000));
+        this.addSlot(new Slot(inventory, BrewingStationBlockEntity.INPUT_SLOT_3, -1000, -1000));
 
-        // Add player inventory slots
+        // Add player inventory slots - all positions relative to X and Y offsets
         // Main inventory (3 rows of 9)
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 104 + i * 18));
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 
+                    PLAYER_INVENTORY_X_OFFSET + j * 18, PLAYER_INVENTORY_Y_OFFSET + i * 18));
             }
         }
 
         // Hotbar (1 row of 9)
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 162));
+            this.addSlot(new Slot(playerInventory, i, 
+                PLAYER_INVENTORY_X_OFFSET + i * 18, PLAYER_INVENTORY_Y_OFFSET + 58));
         }
     }
 

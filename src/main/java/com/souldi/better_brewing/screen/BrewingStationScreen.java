@@ -11,10 +11,13 @@ public class BrewingStationScreen extends HandledScreen<BrewingStationScreenHand
     
     public BrewingStationScreen(BrewingStationScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
-        // Устанавливаем размеры точно как у верстака
-        this.backgroundHeight = 166;
-        this.backgroundWidth = 176;
-        this.playerInventoryTitleY = this.backgroundHeight - 94;
+        // Use your custom texture dimensions
+        this.backgroundHeight = 256;
+        this.backgroundWidth = 256;
+        
+        // ADJUST THESE VALUES TO POSITION TITLES:
+        this.titleY = 46;  // Main title Y position
+        this.playerInventoryTitleY = 142; // "Inventory" text Y position
     }
 
     @Override
@@ -34,13 +37,15 @@ public class BrewingStationScreen extends HandledScreen<BrewingStationScreenHand
         // Render the standard HandledScreen (slots, items, cursor)
         super.render(context, mouseX, mouseY, delta);
         
-        // Render brewing progress if available
+        // TODO: Add custom brewing progress indicators here if your texture includes them
+        // You can customize this based on your brewing_station_main_menu.png layout
         if (handler.isLit()) {
             int progress = handler.getBrewProgress();
-            // Draw flame progress indicator (you can customize this)
-            int flameX = this.x + 18;
-            int flameY = this.y + 37;
-            context.drawTexture(BACKGROUND_TEXTURE, flameX, flameY, 176, 0, 14, 14 - progress);
+            // Example: Draw a custom progress bar or animation
+            // Uncomment and adjust coordinates based on your texture:
+            // int progressX = this.x + [your_progress_x];
+            // int progressY = this.y + [your_progress_y];
+            // context.drawTexture(BACKGROUND_TEXTURE, progressX, progressY, [u], [v], [width], [height], 256, 256);
         }
         
         // Render tooltips on top of everything
@@ -49,18 +54,20 @@ public class BrewingStationScreen extends HandledScreen<BrewingStationScreenHand
 
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-        // Render brewing stand GUI background
-        int i = (this.width - this.backgroundWidth) / 2;
-        int j = (this.height - this.backgroundHeight) / 2;
-        context.drawTexture(new Identifier("textures/gui/container/brewing_stand.png"), i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
+        // Render your custom brewing station GUI background
+        int x = (this.width - this.backgroundWidth) / 2;
+        int y = (this.height - this.backgroundHeight) / 2;
+        
+        // Draw your custom texture scaled to fit standard brewing stand size
+        context.drawTexture(BACKGROUND_TEXTURE, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight, 256, 256);
     }
 
     @Override
     protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
         // Draw the title
-        context.drawText(this.textRenderer, this.title, this.titleX, this.titleY, 4210752, false);
+        // context.drawText(this.textRenderer, this.title, this.titleX, this.titleY, 4210752, false);
         // Draw player inventory title
-        context.drawText(this.textRenderer, this.playerInventoryTitle, this.playerInventoryTitleX, this.playerInventoryTitleY, 4210752, false);
+        // context.drawText(this.textRenderer, this.playerInventoryTitle, this.playerInventoryTitleX, this.playerInventoryTitleY, 4210752, false);
     }
 
     @Override
